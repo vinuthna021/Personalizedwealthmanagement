@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: wealth_db
+    restart: always
+    environment:
+      POSTGRES_DB: wealth_db
+      POSTGRES_USER: wealth_admin
+      POSTGRES_PASSWORD: secure_password_here
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U wealth_admin -d wealth_db"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: wealth_redis
+    restart: always
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api-server:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: wealth_api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://wealth_admin:secure_password_here@db/wealth_db
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET_KEY=super_secret_jwt_signing_key_change_me_in_prod
+      - JWT_REFRESH_SECRET_KEY=super_secret_refresh_token_signing_key_change_me
+      - BACKEND_CORS_ORIGINS=["http://localhost", "http://localhost:5173", "https://localhost"]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: wealth_celery
+    restart: always
+    command: celery -A app.celery_app.celery_app worker -B --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://wealth_admin:secure_password_here@db/wealth_db
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET_KEY=super_secret_jwt_signing_key_change_me_in_prod
+      - JWT_REFRESH_SECRET_KEY=super_secret_refresh_token_signing_key_change_me
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:alpine
+    container_name: wealth_nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api-server
+
+volumes:
+  postgres_data:
+  redis_data:
