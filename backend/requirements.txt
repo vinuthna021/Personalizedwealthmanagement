@@ -15,4 +15,6 @@ python-dateutil==2.8.2
 email-validator==2.1.0
 celery==5.3.6
 yfinance==0.2.36
+reportlab==4.1.0
+
 

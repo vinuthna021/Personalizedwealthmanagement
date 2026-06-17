@@ -18,7 +18,7 @@ class Transaction(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     investment_id = Column(Integer, ForeignKey("investments.id", ondelete="SET NULL"), nullable=True, index=True)
     symbol = Column(String(20), nullable=False)
-    type = Column(SQLEnum(TransactionType, name="transactiontype"), nullable=False)
+    type = Column(SQLEnum(TransactionType, name="transactiontype", values_callable=lambda x: [e.value for e in x]), nullable=False)
     quantity = Column(Numeric(15, 6), nullable=False)
     price = Column(Numeric(15, 4), nullable=False)
     fees = Column(Numeric(15, 4), nullable=False, default=0.0000)

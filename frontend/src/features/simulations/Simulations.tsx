@@ -3,9 +3,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Sidebar } from '../../components/layout/Sidebar';
 import { Topbar } from '../../components/layout/Topbar';
 import apiClient from '../../lib/api_client';
-import { Goal, Simulation, WhatIfResult, SimulationResult } from '../../types';
+import { Goal, Simulation, WhatIfResult } from '../../types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { TrendingUp, AlertCircle, Plus, Trash2, Save, FileSpreadsheet, PlusCircle, CheckCircle, RefreshCw } from 'lucide-react';
+import { TrendingUp, AlertCircle, Trash2, Save, FileSpreadsheet, PlusCircle, RefreshCw } from 'lucide-react';
 
 export const Simulations: React.FC = () => {
   const queryClient = useQueryClient();
@@ -312,7 +312,7 @@ export const Simulations: React.FC = () => {
 
                   {scenarios.length > 0 ? (
                     <div className="space-y-4">
-                      {scenarios.map((sc, idx) => (
+                      {scenarios.map((sc) => (
                         <div key={sc.id} className="bg-slate-950/40 border border-wealth-border/60 rounded-xl p-4 space-y-4 relative">
                           <button
                             type="button"

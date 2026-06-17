@@ -8,6 +8,8 @@ import { GoalsList } from '../features/goals/GoalsList';
 import { PortfolioView } from '../features/portfolio/PortfolioView';
 import { TransactionsList } from '../features/portfolio/TransactionsList';
 import { Simulations } from '../features/simulations/Simulations';
+import { Recommendations } from '../features/recommendations/Recommendations';
+import { Reports } from '../features/reports/Reports';
 import { ProtectedRoute } from './ProtectedRoute';
 
 export const AppRoutes: React.FC = () => {
@@ -61,6 +63,22 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/recommendations"
+        element={
+          <ProtectedRoute>
+            <Recommendations />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <Reports />
           </ProtectedRoute>
         }
       />

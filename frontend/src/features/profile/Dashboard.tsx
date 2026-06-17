@@ -154,7 +154,7 @@ export const Dashboard: React.FC = () => {
                         <BarChart data={goalsChartData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                           <CartesianGrid strokeDasharray="3 3" stroke="#243249" />
                           <XAxis dataKey="name" stroke="#94A3B8" fontSize={11} />
-                          <YAxis stroke="#94A3B8" fontSize={11} formatter={(v) => `₹${Number(v) / 1000}k`} />
+                          <YAxis stroke="#94A3B8" fontSize={11} tickFormatter={(v) => `₹${Number(v) / 1000}k`} />
                           <Tooltip 
                             formatter={(value: any) => `₹${Number(value).toLocaleString('en-IN')}`}
                             contentStyle={{ backgroundColor: '#1E293B', borderColor: '#334155', borderRadius: '8px' }}

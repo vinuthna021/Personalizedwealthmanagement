@@ -138,3 +138,31 @@ export interface WhatIfResult {
     [key: string]: number | null;
   }>;
 }
+
+export interface Recommendation {
+  id: number;
+  user_id: number;
+  title: string;
+  recommendation_text: string;
+  suggested_allocation: Record<string, number>;
+  is_read: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RebalanceSuggestion {
+  asset_class: string;
+  action: 'BUY' | 'SELL';
+  amount: number;
+  percentage: number;
+  message: string;
+}
+
+export interface RebalanceResult {
+  total_value: number;
+  current_allocations: Record<string, number>;
+  target_allocations: Record<string, number>;
+  drift: Record<string, number>;
+  suggestions: RebalanceSuggestion[];
+}
+

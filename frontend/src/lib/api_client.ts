@@ -9,7 +9,7 @@ const apiClient = axios.create({
 });
 
 let isRefreshing = false;
-let failedQueue: Array<{ resolve: () => void; reject: (err: any) => void }> = [];
+let failedQueue: Array<{ resolve: (value?: any) => void; reject: (err: any) => void }> = [];
 
 const processQueue = (error: any) => {
   failedQueue.forEach((promise) => {

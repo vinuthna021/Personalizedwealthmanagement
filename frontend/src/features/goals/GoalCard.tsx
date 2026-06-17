@@ -1,7 +1,6 @@
 import React from 'react';
 import { Goal } from '../../types';
 import { Home, GraduationCap, Plane, ShieldAlert, AlertTriangle, HelpCircle, Edit2, Trash2 } from 'lucide-react';
-import { Button } from '../../components/ui/Button';
 
 interface GoalCardProps {
   goal: Goal;

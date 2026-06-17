@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Sidebar } from '../../components/layout/Sidebar';
 import { Topbar } from '../../components/layout/Topbar';
 import { PortfolioSummary } from './PortfolioSummary';
 import { InvestmentTable } from './InvestmentTable';
+import { RebalanceDrawer } from './RebalanceDrawer';
 import apiClient from '../../lib/api_client';
 import { Investment, PortfolioSummary as SummaryType } from '../../types';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -12,6 +13,7 @@ import { Link } from 'react-router-dom';
 
 export const PortfolioView: React.FC = () => {
   const queryClient = useQueryClient();
+  const [isRebalanceOpen, setIsRebalanceOpen] = useState(false);
 
   // Fetch investments list
   const { data: investments = [], isLoading: isListLoading, error: listError } = useQuery<Investment[]>({
@@ -94,6 +96,12 @@ export const PortfolioView: React.FC = () => {
               </p>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => setIsRebalanceOpen(true)}
+                className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-sm font-semibold rounded-lg transition-colors border border-wealth-border/60"
+              >
+                <span>Rebalance Advisor</span>
+              </button>
               <button 
                 onClick={handleRefreshPrices}
                 disabled={refreshMutation.isPending}
@@ -146,7 +154,7 @@ export const PortfolioView: React.FC = () => {
                             paddingAngle={3}
                             dataKey="value"
                           >
-                            {allocationData.map((entry, index) => (
+                            {allocationData.map((_, index) => (
                               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                           </Pie>
@@ -207,6 +215,7 @@ export const PortfolioView: React.FC = () => {
               </div>
             </>
           )}
+          <RebalanceDrawer isOpen={isRebalanceOpen} onClose={() => setIsRebalanceOpen(false)} />
         </main>
       </div>
     </div>

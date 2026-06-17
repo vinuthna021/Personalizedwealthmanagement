@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, User, LogOut, TrendingUp, Goal, Briefcase, History, LineChart } from 'lucide-react';
+import { LayoutDashboard, User, LogOut, TrendingUp, Goal, Briefcase, History, LineChart, Lightbulb, FileText } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
 export const Sidebar: React.FC = () => {
@@ -12,6 +12,8 @@ export const Sidebar: React.FC = () => {
     { to: '/portfolio', label: 'Portfolio Holdings', icon: Briefcase },
     { to: '/transactions', label: 'Transaction Ledger', icon: History },
     { to: '/simulations', label: 'What-If Projections', icon: LineChart },
+    { to: '/recommendations', label: 'Recommendations', icon: Lightbulb },
+    { to: '/reports', label: 'Reports Dashboard', icon: FileText },
     { to: '/profile', label: 'Profile & KYC', icon: User },
   ];
 
