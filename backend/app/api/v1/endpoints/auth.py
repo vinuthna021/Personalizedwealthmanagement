@@ -7,6 +7,7 @@ from app.schemas.user import UserCreate, UserResponse
 from app.schemas.auth import LoginRequest
 from app.api.dependencies import get_current_user
 from app.models.user import User
+from app.core.config import settings
 
 router = APIRouter()
 
@@ -16,8 +17,8 @@ def set_auth_cookies(response: Response, access_token: str, refresh_token: str):
         key="access_token",
         value=access_token,
         httponly=True,
-        secure=False,  # Set True in production (requires HTTPS)
-        samesite="lax", # Strict or Lax
+        secure=settings.SECURE_COOKIES,
+        samesite="strict",
         max_age=15 * 60, # 15 minutes
         path="/"
     )
@@ -25,7 +26,7 @@ def set_auth_cookies(response: Response, access_token: str, refresh_token: str):
         key="refresh_token",
         value=refresh_token,
         httponly=True,
-        secure=False,  # Set True in production (requires HTTPS)
+        secure=settings.SECURE_COOKIES,
         samesite="strict",
         max_age=7 * 24 * 60 * 60, # 7 days
         path="/api/v1/auth/refresh"

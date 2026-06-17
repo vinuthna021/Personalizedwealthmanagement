@@ -21,9 +21,16 @@ class Settings(BaseSettings):
     JWT_REFRESH_SECRET_KEY: str = "super_secret_refresh_token_signing_key_change_me"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    SECURE_COOKIES: bool = False
     
     # CORS Origins
-    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost", "http://localhost:5173", "https://localhost"]
+    BACKEND_CORS_ORIGINS: List[str] = [
+        "http://localhost",
+        "http://localhost:5173",
+        "https://localhost",
+        "https://personalizedwealthmanagement.vercel.app",
+        "https://personalizedwealthmanagement-vinuthna021.vercel.app"
+    ]
 
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
     @classmethod

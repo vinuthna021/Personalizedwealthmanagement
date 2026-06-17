@@ -1,0 +1,44 @@
+services:
+  # 1. FastAPI Web API Service
+  - type: web
+    name: wealth-api
+    env: docker
+    dockerContext: backend
+    dockerfilePath: Dockerfile
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        sync: false
+      - key: JWT_REFRESH_SECRET_KEY
+        sync: false
+      - key: SECURE_COOKIES
+        value: "true"
+      - key: BACKEND_CORS_ORIGINS
+        sync: false
+      - key: ALPHA_VANTAGE_API_KEY
+        sync: false
+
+  # 2. Celery Async Task Worker + Beat Scheduler
+  - type: worker
+    name: wealth-worker
+    env: docker
+    dockerContext: backend
+    dockerfilePath: Dockerfile
+    plan: starter
+    startCommand: celery -A app.celery_app.celery_app worker -B --loglevel=info
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        sync: false
+      - key: JWT_REFRESH_SECRET_KEY
+        sync: false
+      - key: SECURE_COOKIES
+        value: "true"
